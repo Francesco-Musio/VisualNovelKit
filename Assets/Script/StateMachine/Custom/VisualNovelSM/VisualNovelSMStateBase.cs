@@ -8,11 +8,11 @@ namespace StateMachine.VisualNovelSM
     public class VisualNovelSMStateBase : StateMachineStateBase
     {
 
-        protected SceneContextManager context;
+        protected VisualNovelSMContext context;
 
         public override void Setup(ISMContext _context)
         {
-            this.context = _context as SceneContextManager;
+            context = _context as VisualNovelSMContext;
         }
     }
 

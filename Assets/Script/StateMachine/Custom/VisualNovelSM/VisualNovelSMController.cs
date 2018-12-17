@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using UnityEditor;
+using StoryManagerNS;
 
 namespace StateMachine.VisualNovelSM
 {
@@ -11,6 +14,11 @@ namespace StateMachine.VisualNovelSM
     [RequireComponent(typeof(Animator))]
     public class VisualNovelSMController : MonoBehaviour
     {
+        #region Delegates
+        public delegate void VNSMEvent();
+        public VNSMEvent InitSM;
+        #endregion 
+
         /// <summary>
         /// Reference to SM context
         /// </summary>
@@ -19,19 +27,19 @@ namespace StateMachine.VisualNovelSM
         /// <summary>
         /// Reference to the Game SM
         /// </summary>
-        protected Animator InGameSM;
+        protected Animator VisalNovelSM;
 
         /// <summary>
         /// Initialize the SM and Setup of every State
         /// </summary>
         /// <param name="_context"></param>
-        public void Init(SceneContextManager _context)
+        public void Init(SceneContextManager _context, StoryManager _story)
         {
-            this.context = new VisualNovelSMContext(_context);
+            this.context = new VisualNovelSMContext(_context, _story, goToWriteDialogueCallback, goToReadLineCallback);
 
-            this.InGameSM = GetComponent<Animator>();
+            this.VisalNovelSM = GetComponent<Animator>();
 
-            foreach(StateMachineBehaviour _current in InGameSM.GetBehaviours<StateMachineBehaviour>())
+            foreach(StateMachineBehaviour _current in VisalNovelSM.GetBehaviours<StateMachineBehaviour>())
             {
                 IState _state = _current as IState;
                 if (_state != null)
@@ -40,8 +48,27 @@ namespace StateMachine.VisualNovelSM
                 }
             }
 
-            this.InGameSM.SetTrigger("StartSM");
+            InitSM += HandleInitSM;
         }
+
+        #region Delegated
+        private void HandleInitSM()
+        {
+            this.VisalNovelSM.SetTrigger("StartSM");
+        }
+        #endregion
+
+        #region Callbacks
+        private void goToWriteDialogueCallback()
+        {
+            this.VisalNovelSM.SetTrigger("GoToWriteDialogue");
+        }
+
+        private void goToReadLineCallback()
+        {
+            this.VisalNovelSM.SetTrigger("GoToReadLine");
+        }
+        #endregion
 
     }
 
@@ -51,11 +78,19 @@ namespace StateMachine.VisualNovelSM
     public class VisualNovelSMContext: ISMContext
     {
 
-        public SceneContextManager context;
+        public SceneContextManager scene;
+        public StoryManager story;
 
-        public VisualNovelSMContext(SceneContextManager _context)
+        public Action GoToWriteDialogueCallback;
+        public Action GoToReadLineCallback;
+
+        public VisualNovelSMContext(SceneContextManager _scene, StoryManager _story, Action _goToWriteDialogueCallback, Action _goToReadLineCallback)
         {
-            context = _context;
+            scene = _scene;
+            story = _story;
+
+            GoToWriteDialogueCallback = _goToWriteDialogueCallback;
+            GoToReadLineCallback = _goToReadLineCallback;
         }
 
     }
