@@ -5,7 +5,10 @@ using System.IO;
 
 /**
  * Line to print in the middle:
- *  0 $ 
+ *  0 $ central $ message
+ *  
+ * Place Actor:
+ *  1 $ LeftActorName $ RightActorName $ TransitionTime
  */
 
 namespace StoryManagerNS

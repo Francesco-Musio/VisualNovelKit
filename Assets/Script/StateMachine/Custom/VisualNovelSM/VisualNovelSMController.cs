@@ -4,6 +4,7 @@ using UnityEngine;
 using System;
 using UnityEditor;
 using StoryManagerNS;
+using Characters;
 
 namespace StateMachine.VisualNovelSM
 {
@@ -33,9 +34,9 @@ namespace StateMachine.VisualNovelSM
         /// Initialize the SM and Setup of every State
         /// </summary>
         /// <param name="_context"></param>
-        public void Init(SceneContextManager _context, StoryManager _story)
+        public void Init(SceneContextManager _scene, StoryManager _story, CharacterManager _characters)
         {
-            this.context = new VisualNovelSMContext(_context, _story, goToWriteDialogueCallback, goToReadLineCallback);
+            this.context = new VisualNovelSMContext(_scene, _story, _characters, goToWriteDialogueCallback, goToReadLineCallback, goToPlaceActorCallback);
 
             this.VisalNovelSM = GetComponent<Animator>();
 
@@ -68,6 +69,11 @@ namespace StateMachine.VisualNovelSM
         {
             this.VisalNovelSM.SetTrigger("GoToReadLine");
         }
+
+        private void goToPlaceActorCallback()
+        {
+            this.VisalNovelSM.SetTrigger("GoToPlaceActor");
+        }
         #endregion
 
     }
@@ -80,17 +86,21 @@ namespace StateMachine.VisualNovelSM
 
         public SceneContextManager scene;
         public StoryManager story;
+        public CharacterManager characters;
 
         public Action GoToWriteDialogueCallback;
         public Action GoToReadLineCallback;
+        public Action GoToPlaceActorCallback;
 
-        public VisualNovelSMContext(SceneContextManager _scene, StoryManager _story, Action _goToWriteDialogueCallback, Action _goToReadLineCallback)
+        public VisualNovelSMContext(SceneContextManager _scene, StoryManager _story, CharacterManager _characters, Action _goToWriteDialogueCallback, Action _goToReadLineCallback, Action _goToPlaceActorCallback)
         {
             scene = _scene;
             story = _story;
+            characters = _characters;
 
             GoToWriteDialogueCallback = _goToWriteDialogueCallback;
             GoToReadLineCallback = _goToReadLineCallback;
+            GoToPlaceActorCallback = _goToPlaceActorCallback;
         }
 
     }

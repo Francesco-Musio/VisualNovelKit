@@ -50,7 +50,7 @@ public class SceneContextManager : MonoBehaviour
 
         if (visualNovelSMController != null)
         {
-            visualNovelSMController.Init(this, storyManager);
+            visualNovelSMController.Init(this, storyManager, characterManager);
         }
 
         WriteText += HandleWriteText;

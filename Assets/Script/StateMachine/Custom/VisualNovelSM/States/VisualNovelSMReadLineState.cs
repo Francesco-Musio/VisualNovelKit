@@ -14,6 +14,10 @@ public class VisualNovelSMReadLineState : VisualNovelSMStateBase {
             case 0:
                 context.GoToWriteDialogueCallback();
                 break;
+
+            case 1:
+                context.GoToPlaceActorCallback();
+                break;
         }
 
     }
