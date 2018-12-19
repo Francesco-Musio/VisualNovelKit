@@ -6,10 +6,23 @@ using StoryManagerNS;
 
 public class VisualNovelSMPlaceActorState : VisualNovelSMStateBase
 {
+    /// <summary>
+    /// Total animation time
+    /// Value got from the story line
+    /// </summary>
     private int animationTime = 10000;
+    /// <summary>
+    /// Internal timer
+    /// </summary>
     private float timer = 0;
+    /// <summary>
+    /// bool to signel when the timer can start
+    /// </summary>
     private bool start = false;
 
+    /// <summary>
+    /// Get the Current line from the story manager and request to place the actors
+    /// </summary>
     public override void Enter()
     {
         LineElement _currentLine = context.story.GetCurrentLine();
@@ -19,6 +32,10 @@ public class VisualNovelSMPlaceActorState : VisualNovelSMStateBase
 
     }
 
+    /// <summary>
+    /// wait for the animation to complete
+    /// TODO: Replace this state with submachine and make another state where the system waits
+    /// </summary>
     public override void Tick()
     {
         if (start)
@@ -32,6 +49,9 @@ public class VisualNovelSMPlaceActorState : VisualNovelSMStateBase
         }
     }
 
+    /// <summary>
+    /// Reset default state values
+    /// </summary>
     public override void Exit()
     {
         start = false;

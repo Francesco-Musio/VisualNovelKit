@@ -13,20 +13,31 @@ namespace Characters
 
         [Header("Actors")]
         [SerializeField]
+        [Tooltip("List of Actor Prefabs")]
         private List<GameObject> actorPrefabs = new List<GameObject>();
+        /// <summary>
+        /// List of each Actor's Actor script
+        /// </summary>
         private List<Actor> actorList = new List<Actor>();
         [SerializeField]
+        [Tooltip("Reference to the Active Actor on the Left. This is only for debugging purpose")]
         private Actor activeLeftActor = null;
         [SerializeField]
+        [Tooltip("Reference to the Active Actor on the Right. This is only for debugging purpose")]
         private Actor activeRightActor = null;
 
         [Header("Actor Positions")]
         [SerializeField]
+        [Tooltip("Position that the Actor's GameObject on the left should have")]
         private Vector3 rightPosition;
         [SerializeField]
+        [Tooltip("Position that the Actor's GameObject on the right should have")]
         private Vector3 leftPosition;
 
         #region API
+        /// <summary>
+        /// Initialize this Object and its events
+        /// </summary>
         public void Init()
         {
             foreach (GameObject actorPref in actorPrefabs)
@@ -43,6 +54,10 @@ namespace Characters
         #endregion
 
         #region Delegated
+        /// <summary>
+        /// Handle the request to put actors on the scene
+        /// </summary>
+        /// <param name="_data">data string taken from the ink file</param>
         private void HandlePlaceActor(string[] _data)
         {
 

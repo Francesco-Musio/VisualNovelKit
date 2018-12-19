@@ -34,9 +34,10 @@ namespace StateMachine.VisualNovelSM
         /// Initialize the SM and Setup of every State
         /// </summary>
         /// <param name="_context"></param>
-        public void Init(SceneContextManager _scene, StoryManager _story, CharacterManager _characters)
+        public void Init(SceneContextManager _scene, StoryManager _story, CharacterManager _characters, VisualNovelDialogueArea _dialogues)
         {
-            this.context = new VisualNovelSMContext(_scene, _story, _characters, goToWriteDialogueCallback, goToReadLineCallback, goToPlaceActorCallback);
+            this.context = new VisualNovelSMContext(_scene, _story, _characters, _dialogues);
+            context.ActionsInit(goToWriteDialogueCallback, goToReadLineCallback, goToPlaceActorCallback);
 
             this.VisalNovelSM = GetComponent<Animator>();
 
@@ -60,19 +61,28 @@ namespace StateMachine.VisualNovelSM
         #endregion
 
         #region Callbacks
+        /// <summary>
+        /// Used to switch from ReadLineState to WriteLineState
+        /// </summary>
         private void goToWriteDialogueCallback()
         {
             this.VisalNovelSM.SetTrigger("GoToWriteDialogue");
         }
 
-        private void goToReadLineCallback()
-        {
-            this.VisalNovelSM.SetTrigger("GoToReadLine");
-        }
-
+        /// <summary>
+        /// Used to switch from ReadLineState to PlaceActorState
+        /// </summary>
         private void goToPlaceActorCallback()
         {
             this.VisalNovelSM.SetTrigger("GoToPlaceActor");
+        }
+
+        /// <summary>
+        /// Used to return to ReadLineState
+        /// </summary>
+        private void goToReadLineCallback()
+        {
+            this.VisalNovelSM.SetTrigger("GoToReadLine");
         }
         #endregion
 
@@ -87,17 +97,35 @@ namespace StateMachine.VisualNovelSM
         public SceneContextManager scene;
         public StoryManager story;
         public CharacterManager characters;
+        public VisualNovelDialogueArea dialogues;
 
         public Action GoToWriteDialogueCallback;
         public Action GoToReadLineCallback;
         public Action GoToPlaceActorCallback;
 
-        public VisualNovelSMContext(SceneContextManager _scene, StoryManager _story, CharacterManager _characters, Action _goToWriteDialogueCallback, Action _goToReadLineCallback, Action _goToPlaceActorCallback)
+        /// <summary>
+        /// Initialize this object
+        /// </summary>
+        /// <param name="_scene"></param>
+        /// <param name="_story"></param>
+        /// <param name="_characters"></param>
+        /// <param name="_dialogues"></param>
+        public VisualNovelSMContext(SceneContextManager _scene, StoryManager _story, CharacterManager _characters, VisualNovelDialogueArea _dialogues)
         {
             scene = _scene;
             story = _story;
             characters = _characters;
+            dialogues = _dialogues;
+        }
 
+        /// <summary>
+        /// Setup the Actions avaiable in this context
+        /// </summary>
+        /// <param name="_goToWriteDialogueCallback"></param>
+        /// <param name="_goToReadLineCallback"></param>
+        /// <param name="_goToPlaceActorCallback"></param>
+        public void ActionsInit(Action _goToWriteDialogueCallback, Action _goToReadLineCallback, Action _goToPlaceActorCallback)
+        {
             GoToWriteDialogueCallback = _goToWriteDialogueCallback;
             GoToReadLineCallback = _goToReadLineCallback;
             GoToPlaceActorCallback = _goToPlaceActorCallback;
