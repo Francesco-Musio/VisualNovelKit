@@ -16,17 +16,30 @@ public class SceneContextManager : MonoBehaviour
     public DeleteEvent DeleteText;
     #endregion
 
+    /// <summary>
+    /// Reference to this object's Visual Novel Controller
+    /// </summary>
     private VisualNovelSMController visualNovelSMController;
-    private StoryManager storyManager;
-    private CharacterManager characterManager;
 
-    //target text
+    /// <summary>
+    /// Reference to this object's Story Manager
+    /// </summary>
+    private StoryManager storyManager;
+
+    /// <summary>
+    /// Reference to this object's Character Manager
+    /// </summary>
+    private CharacterManager characterManager;
 
     [Header("Dialogue Area")]
     [SerializeField]
+    [Tooltip("Reference to the Canvas with the Text Areas")]
     private VisualNovelDialogueArea visualNovelDialogueArea;
 
     #region API
+    /// <summary>
+    /// Initialize this object and start the Visual Novel State Machine
+    /// </summary>
     public void Init ()
     {
         visualNovelSMController = GetComponent<VisualNovelSMController>();
@@ -50,7 +63,7 @@ public class SceneContextManager : MonoBehaviour
 
         if (visualNovelSMController != null)
         {
-            visualNovelSMController.Init(this, storyManager);
+            visualNovelSMController.Init(this, storyManager, characterManager, visualNovelDialogueArea);
         }
 
         WriteText += HandleWriteText;
@@ -63,6 +76,7 @@ public class SceneContextManager : MonoBehaviour
     }
     #endregion API
 
+    // TO DELETE
     #region Delegated
     private void HandleWriteText(string[] _data)
     {
