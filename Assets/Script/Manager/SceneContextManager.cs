@@ -8,13 +8,6 @@ using Characters;
 [RequireComponent(typeof(StoryManager))]
 public class SceneContextManager : MonoBehaviour
 {
-    #region Delegates
-    public delegate void WriteEvent(string[] _data);
-    public WriteEvent WriteText;
-
-    public delegate void DeleteEvent();
-    public DeleteEvent DeleteText;
-    #endregion
 
     /// <summary>
     /// Reference to this object's Visual Novel Controller
@@ -66,33 +59,10 @@ public class SceneContextManager : MonoBehaviour
             visualNovelSMController.Init(this, storyManager, characterManager, visualNovelDialogueArea);
         }
 
-        WriteText += HandleWriteText;
-        DeleteText += HandleDeleteText;
-
         if (visualNovelSMController != null)
         {
             visualNovelSMController.InitSM();
         }
     }
     #endregion API
-
-    // TO DELETE
-    #region Delegated
-    private void HandleWriteText(string[] _data)
-    {
-        if (_data[0].Equals("central"))
-        {
-            visualNovelDialogueArea.Write("central", _data);
-        }
-        else
-        {
-            //controlla posizione attore e poi manda comando a canvas
-        }
-    }
-
-    private void HandleDeleteText()
-    {
-        visualNovelDialogueArea.Delete();
-    }
-    #endregion
 }

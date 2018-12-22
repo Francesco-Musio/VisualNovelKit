@@ -51,6 +51,22 @@ namespace Characters
 
             PlaceActor += HandlePlaceActor;
         }
+
+        public string GetActorPosition(string _data)
+        {
+            if (activeLeftActor != null && activeLeftActor.GetName() == _data)
+            {
+                return "left";
+            }
+            else if (activeRightActor != null && activeRightActor.GetName() == _data)
+            {
+                return "right";
+            }
+            else
+            {
+                return "central";
+            }
+        }
         #endregion
 
         #region Delegated
