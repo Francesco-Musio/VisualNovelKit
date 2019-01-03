@@ -196,8 +196,9 @@ GameObject:
   - component: {fileID: 191174256}
   - component: {fileID: 191174255}
   - component: {fileID: 191174254}
+  - component: {fileID: 191174258}
   m_Layer: 5
-  m_Name: VisualNovelBackground
+  m_Name: VisualNovelLayersArea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -279,6 +280,23 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &191174258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 191174253}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d9a5c5a24705924a8ef521c3d980ea7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  backgroundList:
+  - {fileID: 21300000, guid: 654d6ca8958a0044bb8032ce494839a0, type: 3}
+  - {fileID: 21300000, guid: 00f988f08c94f8248b8a37654c158e56, type: 3}
+  activeBackground: 
+  background: {fileID: 2012350188}
+  foreground: {fileID: 0}
 --- !u!1 &458642734
 GameObject:
   m_ObjectHideFlags: 0
@@ -1023,6 +1041,7 @@ GameObject:
   - component: {fileID: 1416977790}
   - component: {fileID: 1416977791}
   - component: {fileID: 1416977795}
+  - component: {fileID: 1416977796}
   m_Layer: 0
   m_Name: VisualNovelManager
   m_TagString: Untagged
@@ -1096,7 +1115,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c30c00f0889c9b5468ac1b7e2a36a9e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  visualNovelDialogueArea: {fileID: 1212094904}
 --- !u!114 &1416977795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1114,6 +1132,19 @@ MonoBehaviour:
   activeRightActor: {fileID: 0}
   rightPosition: {x: 5, y: 0, z: 0}
   leftPosition: {x: -5, y: 0, z: 0}
+--- !u!114 &1416977796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1416977789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a65804e3e3fedbd44af5a5937fbe2d58, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualNovelDialogueArea: {fileID: 1212094904}
+  visualNovelLayersArea: {fileID: 191174258}
 --- !u!1 &1660273437
 GameObject:
   m_ObjectHideFlags: 0

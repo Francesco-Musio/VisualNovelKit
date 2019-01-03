@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class VisualNovelDialogueArea : MonoBehaviour
 {
     #region Delegates
-    public delegate void DialogeAreaWriteEvent(string position, string[] _data);
+    public delegate void DialogeAreaWriteEvent(string _position, string[] _data);
     public DialogeAreaWriteEvent Write;
 
     public delegate void DialogueAreaDeleteEvent();
@@ -48,10 +48,10 @@ public class VisualNovelDialogueArea : MonoBehaviour
     /// </summary>
     /// <param name="position">central or an actor's name</param>
     /// <param name="_data">data string got from ink</param>
-    private void HandleWrite(string position, string[] _data)
+    private void HandleWrite(string _position, string[] _data)
     {
         // !! per destra e sinistra, data1 è il soprannome e data2 è il testo
-        switch (position)
+        switch (_position)
         {
             case "central":
                 CentralTextArea.text = _data[1];

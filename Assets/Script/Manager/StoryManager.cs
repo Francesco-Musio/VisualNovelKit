@@ -9,6 +9,9 @@ using System.IO;
  *  
  * Place Actor:
  *  1 $ LeftActorName $ RightActorName $ TransitionTime
+ *  
+ * Change Background:
+ *  2 $ BackgroundName $ TransitionTime
  */
 
 namespace StoryManagerNS

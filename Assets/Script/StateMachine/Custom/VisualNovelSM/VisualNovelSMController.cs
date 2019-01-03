@@ -34,10 +34,10 @@ namespace StateMachine.VisualNovelSM
         /// Initialize the SM and Setup of every State
         /// </summary>
         /// <param name="_context"></param>
-        public void Init(SceneContextManager _scene, StoryManager _story, CharacterManager _characters, VisualNovelDialogueArea _dialogues)
+        public void Init(SceneContextManager _scene, StoryManager _story, CharacterManager _characters, UIManager _ui)
         {
-            this.context = new VisualNovelSMContext(_scene, _story, _characters, _dialogues);
-            context.ActionsInit(goToWriteDialogueCallback, goToReadLineCallback, goToPlaceActorCallback);
+            this.context = new VisualNovelSMContext(_scene, _story, _characters, _ui);
+            context.ActionsInit(goToWriteDialogueCallback, goToReadLineCallback, goToPlaceActorCallback, goToChangeBackgroundCallback);
 
             this.VisalNovelSM = GetComponent<Animator>();
 
@@ -84,6 +84,11 @@ namespace StateMachine.VisualNovelSM
         {
             this.VisalNovelSM.SetTrigger("GoToReadLine");
         }
+
+        private void goToChangeBackgroundCallback()
+        {
+            this.VisalNovelSM.SetTrigger("GoToChangeBackground");
+        }
         #endregion
 
     }
@@ -97,11 +102,12 @@ namespace StateMachine.VisualNovelSM
         public SceneContextManager scene;
         public StoryManager story;
         public CharacterManager characters;
-        public VisualNovelDialogueArea dialogues;
+        public UIManager ui;
 
         public Action GoToWriteDialogueCallback;
         public Action GoToReadLineCallback;
         public Action GoToPlaceActorCallback;
+        public Action GoToChangeBackgroundCallback;
 
         /// <summary>
         /// Initialize this object
@@ -110,12 +116,12 @@ namespace StateMachine.VisualNovelSM
         /// <param name="_story"></param>
         /// <param name="_characters"></param>
         /// <param name="_dialogues"></param>
-        public VisualNovelSMContext(SceneContextManager _scene, StoryManager _story, CharacterManager _characters, VisualNovelDialogueArea _dialogues)
+        public VisualNovelSMContext(SceneContextManager _scene, StoryManager _story, CharacterManager _characters, UIManager _ui)
         {
             scene = _scene;
             story = _story;
             characters = _characters;
-            dialogues = _dialogues;
+            ui = _ui;
         }
 
         /// <summary>
@@ -124,11 +130,12 @@ namespace StateMachine.VisualNovelSM
         /// <param name="_goToWriteDialogueCallback"></param>
         /// <param name="_goToReadLineCallback"></param>
         /// <param name="_goToPlaceActorCallback"></param>
-        public void ActionsInit(Action _goToWriteDialogueCallback, Action _goToReadLineCallback, Action _goToPlaceActorCallback)
+        public void ActionsInit(Action _goToWriteDialogueCallback, Action _goToReadLineCallback, Action _goToPlaceActorCallback, Action _goToChangeBackgroundCallback)
         {
             GoToWriteDialogueCallback = _goToWriteDialogueCallback;
             GoToReadLineCallback = _goToReadLineCallback;
             GoToPlaceActorCallback = _goToPlaceActorCallback;
+            GoToChangeBackgroundCallback = _goToChangeBackgroundCallback;
         }
 
     }

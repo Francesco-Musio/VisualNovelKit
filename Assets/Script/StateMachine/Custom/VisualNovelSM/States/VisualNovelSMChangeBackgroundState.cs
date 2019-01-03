@@ -1,11 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using StateMachine.VisualNovelSM;
+﻿using UnityEngine;
+using UnityEditor;
 using StoryManagerNS;
+using StateMachine.VisualNovelSM;
 
-public class VisualNovelSMPlaceActorState : VisualNovelSMStateBase
+public class VisualNovelSMChangeBackgroundState : VisualNovelSMStateBase
 {
+
     /// <summary>
     /// Total animation time
     /// Value got from the story line
@@ -30,9 +30,9 @@ public class VisualNovelSMPlaceActorState : VisualNovelSMStateBase
     public override void Enter()
     {
         LineElement _currentLine = context.story.GetCurrentLine();
-        animationTime = int.Parse(_currentLine.GetData()[2]);
+        animationTime = int.Parse(_currentLine.GetData()[1]);
         start = true;
-        multiplier = context.characters.PlaceActor(_currentLine.GetData());
+        multiplier = context.ui.ChangeBackground(_currentLine.GetData());
 
     }
 

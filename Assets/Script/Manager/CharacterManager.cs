@@ -7,7 +7,7 @@ namespace Characters
     public class CharacterManager : MonoBehaviour
     {
         #region Delegates
-        public delegate void PlaceActorEvent(string[] _data);
+        public delegate int PlaceActorEvent(string[] _data);
         public PlaceActorEvent PlaceActor;
         #endregion
 
@@ -69,12 +69,12 @@ namespace Characters
         }
         #endregion
 
-        #region Delegated
+        #region Handlers
         /// <summary>
         /// Handle the request to put actors on the scene
         /// </summary>
         /// <param name="_data">data string taken from the ink file</param>
-        private void HandlePlaceActor(string[] _data)
+        private int HandlePlaceActor(string[] _data)
         {
 
             if (activeLeftActor != null && activeLeftActor.GetName() != _data[0])
@@ -97,6 +97,8 @@ namespace Characters
                     {
                         _actor.InsertActor(int.Parse(_data[2]), leftPosition, ActorState.Left);
                         activeLeftActor = _actor;
+
+                        return 2;
                     }
                 }
             }
@@ -109,9 +111,13 @@ namespace Characters
                     {
                         _actor.InsertActor(int.Parse(_data[2]), rightPosition, ActorState.Right);
                         activeRightActor = _actor;
+
+                        return 2;
                     }
                 }
             }
+
+            return 1;
 
         }
         #endregion

@@ -24,10 +24,10 @@ public class SceneContextManager : MonoBehaviour
     /// </summary>
     private CharacterManager characterManager;
 
-    [Header("Dialogue Area")]
-    [SerializeField]
-    [Tooltip("Reference to the Canvas with the Text Areas")]
-    private VisualNovelDialogueArea visualNovelDialogueArea;
+    /// <summary>
+    /// Reference to this object's UI Manager
+    /// </summary>
+    private UIManager uIManager;
 
     #region API
     /// <summary>
@@ -38,6 +38,7 @@ public class SceneContextManager : MonoBehaviour
         visualNovelSMController = GetComponent<VisualNovelSMController>();
         storyManager = GetComponent<StoryManager>();
         characterManager = GetComponent<CharacterManager>();
+        uIManager = GetComponent<UIManager>();
 
         if (storyManager != null)
         {
@@ -49,14 +50,14 @@ public class SceneContextManager : MonoBehaviour
             characterManager.Init();
         }
 
-        if (visualNovelDialogueArea != null)
+        if (uIManager != null)
         {
-            visualNovelDialogueArea.Init();
+            uIManager.Init();
         }
 
         if (visualNovelSMController != null)
         {
-            visualNovelSMController.Init(this, storyManager, characterManager, visualNovelDialogueArea);
+            visualNovelSMController.Init(this, storyManager, characterManager, uIManager);
         }
 
         if (visualNovelSMController != null)

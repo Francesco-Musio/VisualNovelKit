@@ -98,7 +98,7 @@ namespace Characters
         }
         #endregion
 
-        #region Delegated
+        #region Handlers
         /// <summary>
         /// Remove this actor from the scene
         /// </summary>

@@ -13,7 +13,7 @@ public class VisualNovelSMWriteDialogueState : VisualNovelSMStateBase
     {
         LineElement _currentLine = context.story.GetCurrentLine();
         string position = context.characters.GetActorPosition(_currentLine.GetData()[0]);
-        context.dialogues.Write(position, _currentLine.GetData());
+        context.ui.Write(position, _currentLine.GetData());
     }
 
     /// <summary>
@@ -32,6 +32,6 @@ public class VisualNovelSMWriteDialogueState : VisualNovelSMStateBase
     /// </summary>
     public override void Exit()
     {
-        context.dialogues.Delete();
+        context.ui.Delete();
     }
 }
