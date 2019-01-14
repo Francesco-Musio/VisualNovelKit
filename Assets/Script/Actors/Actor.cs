@@ -3,6 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Characters.Animations;
 
 namespace Characters
 {
@@ -16,6 +17,7 @@ namespace Characters
     }
 
     [RequireComponent(typeof(SpriteRenderer))]
+    [RequireComponent(typeof(ActorAnimationController))]
     public class Actor : MonoBehaviour
     {
         #region Delegates
@@ -49,6 +51,8 @@ namespace Characters
         /// </summary>
         private SpriteRenderer spriteRenderer;
 
+        private ActorAnimationController actorAnimationCtrl;
+
         #region API
         /// <summary>
         /// Initialize this object
@@ -61,11 +65,21 @@ namespace Characters
             spriteRenderer = GetComponent<SpriteRenderer>();
 
             spriteRenderer.sprite = emotions[0];
-
+            /*
+            Color _tempColor = spriteRenderer.color;
+            _tempColor.a = 0;
+            spriteRenderer.color = _tempColor;
+            */
             currentEmotion = spriteRenderer.sprite.name;
 
             this.transform.position = new Vector3(1000, 1000, 1000);
             this.gameObject.SetActive(false);
+
+            actorAnimationCtrl = GetComponent<ActorAnimationController>();
+            if (actorAnimationCtrl != null)
+            {
+                actorAnimationCtrl.Init();
+            }
 
             RemoveActor += HandleRemoveActor;
             InsertActor += HandleInsertActor;
@@ -129,7 +143,19 @@ namespace Characters
         /// <returns></returns>
         private IEnumerator CRemoveActor (int _duration)
         {
-            // remove animation for _duration
+            Vector3 _target = new Vector3();
+
+            if (position == ActorState.Left)
+            {
+                _target = this.transform.position - new Vector3(10, 0, 0);
+            }
+            else if (position == ActorState.Right)
+            {
+                _target = this.transform.position + new Vector3(10, 0, 0);
+            }
+
+            yield return actorAnimationCtrl.HorizontalTransition(_target, _duration);
+            
             this.gameObject.SetActive(false);
             this.position = ActorState.OffScene;
             this.transform.position = new Vector3(1000, 1000, 1000);
@@ -145,9 +171,18 @@ namespace Characters
         /// <returns></returns>
         private IEnumerator CInsertActor(int _duration,  Vector3 _target, ActorState _newPosition)
         {
-            //set pre animation position
-            //insert animation for _duration
-            this.transform.position = _target; //TO REMOVE
+            
+            if (_newPosition == ActorState.Left)
+            {
+                this.transform.position = _target - new Vector3(10, _target.y, _target.z);
+            }
+            else if (_newPosition == ActorState.Right)
+            {
+                this.transform.position = _target + new Vector3(10, _target.y, _target.z);
+            }
+            
+            yield return actorAnimationCtrl.HorizontalTransition(_target, _duration);
+
             this.position = _newPosition;
             yield return null;
         }

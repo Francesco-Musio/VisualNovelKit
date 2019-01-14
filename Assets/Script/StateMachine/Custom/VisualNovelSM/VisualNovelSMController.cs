@@ -37,7 +37,7 @@ namespace StateMachine.VisualNovelSM
         public void Init(SceneContextManager _scene, StoryManager _story, CharacterManager _characters, UIManager _ui)
         {
             this.context = new VisualNovelSMContext(_scene, _story, _characters, _ui);
-            context.ActionsInit(goToWriteDialogueCallback, goToReadLineCallback, goToPlaceActorCallback, goToChangeBackgroundCallback);
+            context.ActionsInit(goToWriteDialogueCallback, goToReadLineCallback, goToPlaceActorCallback, goToChangeBackgroundCallback, goToWaitCallback);
 
             this.VisalNovelSM = GetComponent<Animator>();
 
@@ -89,6 +89,11 @@ namespace StateMachine.VisualNovelSM
         {
             this.VisalNovelSM.SetTrigger("GoToChangeBackground");
         }
+
+        private void goToWaitCallback()
+        {
+            this.VisalNovelSM.SetTrigger("GoToWait");
+        }
         #endregion
 
     }
@@ -108,6 +113,15 @@ namespace StateMachine.VisualNovelSM
         public Action GoToReadLineCallback;
         public Action GoToPlaceActorCallback;
         public Action GoToChangeBackgroundCallback;
+        public Action GoToWaitCallback;
+
+        private int timeToWait = 0;
+
+        public int TimeToWait
+        {
+            get { return TimeToWait; }
+            set { timeToWait = value; }
+        }
 
         /// <summary>
         /// Initialize this object
@@ -130,12 +144,13 @@ namespace StateMachine.VisualNovelSM
         /// <param name="_goToWriteDialogueCallback"></param>
         /// <param name="_goToReadLineCallback"></param>
         /// <param name="_goToPlaceActorCallback"></param>
-        public void ActionsInit(Action _goToWriteDialogueCallback, Action _goToReadLineCallback, Action _goToPlaceActorCallback, Action _goToChangeBackgroundCallback)
+        public void ActionsInit(Action _goToWriteDialogueCallback, Action _goToReadLineCallback, Action _goToPlaceActorCallback, Action _goToChangeBackgroundCallback, Action _goToWaitCallback)
         {
             GoToWriteDialogueCallback = _goToWriteDialogueCallback;
             GoToReadLineCallback = _goToReadLineCallback;
             GoToPlaceActorCallback = _goToPlaceActorCallback;
             GoToChangeBackgroundCallback = _goToChangeBackgroundCallback;
+            GoToWaitCallback = _goToWaitCallback;
         }
 
     }

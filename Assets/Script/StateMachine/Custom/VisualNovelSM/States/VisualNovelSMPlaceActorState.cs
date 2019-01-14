@@ -32,25 +32,10 @@ public class VisualNovelSMPlaceActorState : VisualNovelSMStateBase
         LineElement _currentLine = context.story.GetCurrentLine();
         animationTime = int.Parse(_currentLine.GetData()[2]);
         start = true;
-        multiplier = context.characters.PlaceActor(_currentLine.GetData());
+        context.characters.PlaceActor(_currentLine.GetData(), out multiplier);
 
-    }
-
-    /// <summary>
-    /// wait for the animation to complete
-    /// TODO: Replace this state with submachine and make another state where the system waits
-    /// </summary>
-    public override void Tick()
-    {
-        if (start)
-        {
-            timer = timer + Time.deltaTime;
-
-            if (timer >= animationTime * multiplier)
-            {
-                context.GoToReadLineCallback();
-            }
-        }
+        _currentLine.SetTimer(animationTime * multiplier);
+        context.GoToWaitCallback();
     }
 
     /// <summary>

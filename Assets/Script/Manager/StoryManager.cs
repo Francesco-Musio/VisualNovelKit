@@ -12,6 +12,9 @@ using System.IO;
  *  
  * Change Background:
  *  2 $ BackgroundName $ TransitionTime
+ *  
+ * Wait:
+ *  3 $ TimeToWait
  */
 
 namespace StoryManagerNS
@@ -38,7 +41,7 @@ namespace StoryManagerNS
         /// <summary>
         /// last read line
         /// </summary>
-        private LineElement currentLine;
+        private LineElement currentLine = null;
 
         #region API
         /// <summary>
@@ -64,6 +67,7 @@ namespace StoryManagerNS
         {
             if (story.canContinue)
             {
+
                 string _rawtext = story.Continue();
                 _rawtext = _rawtext.Trim();
 
@@ -85,7 +89,7 @@ namespace StoryManagerNS
             return currentLine;
         }
         #endregion
-
+        
     }
 
     public class LineElement : ScriptableObject
@@ -130,6 +134,13 @@ namespace StoryManagerNS
         public string[] GetData()
         {
             return data;
+        }
+        #endregion
+
+        #region Setters
+        public void SetTimer(int value)
+        {
+            data[data.Length - 1] = value.ToString();
         }
         #endregion
     }

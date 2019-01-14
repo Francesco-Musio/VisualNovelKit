@@ -34,23 +34,7 @@ public class VisualNovelSMChangeBackgroundState : VisualNovelSMStateBase
         start = true;
         multiplier = context.ui.ChangeBackground(_currentLine.GetData());
 
-    }
-
-    /// <summary>
-    /// wait for the animation to complete
-    /// TODO: Replace this state with submachine and make another state where the system waits
-    /// </summary>
-    public override void Tick()
-    {
-        if (start)
-        {
-            timer = timer + Time.deltaTime;
-
-            if (timer >= animationTime * multiplier)
-            {
-                context.GoToReadLineCallback();
-            }
-        }
+        context.GoToWaitCallback();
     }
 
     /// <summary>

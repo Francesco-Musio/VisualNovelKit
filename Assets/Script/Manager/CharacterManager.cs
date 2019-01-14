@@ -7,7 +7,7 @@ namespace Characters
     public class CharacterManager : MonoBehaviour
     {
         #region Delegates
-        public delegate int PlaceActorEvent(string[] _data);
+        public delegate void PlaceActorEvent(string[] _data, out int multiplier);
         public PlaceActorEvent PlaceActor;
         #endregion
 
@@ -74,52 +74,75 @@ namespace Characters
         /// Handle the request to put actors on the scene
         /// </summary>
         /// <param name="_data">data string taken from the ink file</param>
-        private int HandlePlaceActor(string[] _data)
+        private void HandlePlaceActor(string[] _data, out int multiplier)
         {
-
             if (activeLeftActor != null && activeLeftActor.GetName() != _data[0])
             {
-                activeLeftActor.RemoveActor(int.Parse(_data[2]));
-                activeLeftActor = null;
+                multiplier = 2;
             }
-
-            if (activeRightActor != null && activeRightActor.GetName() != _data[1])
+            else if (activeRightActor != null && activeRightActor.GetName() != _data[1])
             {
-                activeRightActor.RemoveActor(int.Parse(_data[2]));
-                activeRightActor = null;
+                multiplier = 2;
             }
-
-            if (_data[0] != "null")
+            else
             {
-                foreach (Actor _actor in actorList)
-                {
-                    if (_actor.GetName() == _data[0] && _actor.GetPosition() == ActorState.OffScene)
-                    {
-                        _actor.InsertActor(int.Parse(_data[2]), leftPosition, ActorState.Left);
-                        activeLeftActor = _actor;
-
-                        return 2;
-                    }
-                }
+                multiplier = 1;
             }
 
-            if (_data[1] != "null")
-            {
-                foreach (Actor _actor in actorList)
-                {
-                    if (_actor.GetName() == _data[1] && _actor.GetPosition() == ActorState.OffScene)
-                    {
-                        _actor.InsertActor(int.Parse(_data[2]), rightPosition, ActorState.Right);
-                        activeRightActor = _actor;
-
-                        return 2;
-                    }
-                }
-            }
-
-            return 1;
-
+            StartCoroutine(CHandlePlaceActor(_data));
         }
         #endregion
+
+        private IEnumerator CHandlePlaceActor(string[] _data)
+        {
+            bool wait = false;
+
+            string _leftActorName = _data[0];
+            string _rightActorName = _data[1];
+            int _duration = int.Parse(_data[2]);
+
+            if (activeLeftActor != null && activeLeftActor.GetName() != _leftActorName)
+            {
+                activeLeftActor.RemoveActor(_duration);
+                activeLeftActor = null;
+                wait = true;
+            }
+
+            if (activeRightActor != null && activeRightActor.GetName() != _rightActorName)
+            {
+                activeRightActor.RemoveActor(_duration);
+                activeRightActor = null;
+                wait = true;
+            }
+
+            if (wait)
+            {
+                yield return new WaitForSeconds(_duration);
+            }
+
+            if (_leftActorName != "null")
+            {
+                foreach (Actor _actor in actorList)
+                {
+                    if (_actor.GetName() == _leftActorName && _actor.GetPosition() == ActorState.OffScene)
+                    {
+                        _actor.InsertActor(_duration, leftPosition, ActorState.Left);
+                        activeLeftActor = _actor;
+                    }
+                }
+            }
+
+            if (_rightActorName != "null")
+            {
+                foreach (Actor _actor in actorList)
+                {
+                    if (_actor.GetName() == _rightActorName && _actor.GetPosition() == ActorState.OffScene)
+                    {
+                        _actor.InsertActor(_duration, rightPosition, ActorState.Right);
+                        activeRightActor = _actor;
+                    }
+                }
+            }
+        }
     }
 }

@@ -25,6 +25,10 @@ public class VisualNovelSMReadLineState : VisualNovelSMStateBase {
             case 2:
                 context.GoToChangeBackgroundCallback();
                 break;
+
+            case 3:
+                context.GoToWaitCallback();
+                break;
         }
 
     }
