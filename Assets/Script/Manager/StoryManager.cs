@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using Ink.Runtime;
 using System.IO;
 
@@ -93,6 +94,11 @@ namespace StoryManagerNS
         {
             if (!story.canContinue && story.currentChoices.Count > 0)
             {
+                ChoiceElement _choiceElement = ScriptableObject.CreateInstance(typeof(ChoiceElement)) as ChoiceElement;
+                _choiceElement.Init(story.currentChoices);
+
+                currentChoice = _choiceElement;
+
                 return true;
             }
 
@@ -170,7 +176,21 @@ namespace StoryManagerNS
 
     public class ChoiceElement : ScriptableObject
     {
+        private List<Choice> choices = new List<Choice>();
 
+        #region API
+        public void Init(List<Choice> _choices)
+        {
+            choices = _choices;
+        }
+        #endregion
+
+        #region Getters
+        public List<Choice> GetChoices()
+        {
+            return choices;
+        }
+        #endregion
     }
 }
 

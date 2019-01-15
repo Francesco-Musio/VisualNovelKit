@@ -37,7 +37,7 @@ namespace StateMachine.VisualNovelSM
         public void Init(SceneContextManager _scene, StoryManager _story, CharacterManager _characters, UIManager _ui)
         {
             this.context = new VisualNovelSMContext(_scene, _story, _characters, _ui);
-            context.ActionsInit(goToWriteDialogueCallback, goToReadLineCallback, goToPlaceActorCallback, goToChangeBackgroundCallback, goToWaitCallback, goToChangeEmotionCallback);
+            context.ActionsInit(goToWriteDialogueCallback, goToReadLineCallback, goToPlaceActorCallback, goToChangeBackgroundCallback, goToWaitCallback, goToChangeEmotionCallback, goToChoiceState);
 
             this.VisalNovelSM = GetComponent<Animator>();
 
@@ -108,6 +108,11 @@ namespace StateMachine.VisualNovelSM
         {
             this.VisalNovelSM.SetTrigger("GoToChangeEmotion");
         }
+
+        private void goToChoiceState()
+        {
+            this.VisalNovelSM.SetTrigger("GoToChoice");
+        }
         #endregion
 
     }
@@ -129,6 +134,7 @@ namespace StateMachine.VisualNovelSM
         public Action GoToChangeBackgroundCallback;
         public Action GoToWaitCallback;
         public Action GoToChangeEmotionCallback;
+        public Action GoToChoiceState;
 
         /// <summary>
         /// Initialize this object
@@ -144,7 +150,7 @@ namespace StateMachine.VisualNovelSM
         /// <summary>
         /// Setup the Actions avaiable in this context
         /// </summary>
-        public void ActionsInit(Action _goToWriteDialogueCallback, Action _goToReadLineCallback, Action _goToPlaceActorCallback, Action _goToChangeBackgroundCallback, Action _goToWaitCallback, Action _goToChangeEmotionCallback)
+        public void ActionsInit(Action _goToWriteDialogueCallback, Action _goToReadLineCallback, Action _goToPlaceActorCallback, Action _goToChangeBackgroundCallback, Action _goToWaitCallback, Action _goToChangeEmotionCallback, Action _goToChoiceState)
         {
             GoToWriteDialogueCallback = _goToWriteDialogueCallback;
             GoToReadLineCallback = _goToReadLineCallback;
@@ -152,6 +158,7 @@ namespace StateMachine.VisualNovelSM
             GoToChangeBackgroundCallback = _goToChangeBackgroundCallback;
             GoToWaitCallback = _goToWaitCallback;
             GoToChangeEmotionCallback = _goToChangeEmotionCallback;
+            GoToChoiceState = _goToChoiceState;
         }
 
     }

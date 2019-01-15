@@ -39,12 +39,11 @@ public class VisualNovelSMReadLineState : VisualNovelSMStateBase {
         }
         else if (context.story.ReadChoice())
         {
-            ChoiceElement _currentChoice = context.story.GetCurrentChoice();
-
+            context.GoToChoiceState();
         }
         else
         {
-
+            // callback to exit state
         }
         
     }
