@@ -29,6 +29,9 @@ namespace StoryManagerNS
         public delegate bool StoryEvent();
         public StoryEvent ReadLine;
         public StoryEvent ReadChoice;
+
+        public delegate void ChoiceEvent(int _index);
+        public ChoiceEvent Choice;
         #endregion
 
         [Header("Ink File")]
@@ -63,6 +66,7 @@ namespace StoryManagerNS
 
             ReadLine += HandleReadLine;
             ReadChoice += HandleReadChoice;
+            Choice += HandleChoice;
         }
         #endregion
 
@@ -103,6 +107,15 @@ namespace StoryManagerNS
             }
 
             return false;
+        }
+
+        private void HandleChoice(int _index)
+        {
+            story.ChooseChoiceIndex(_index);
+            if (story.canContinue)
+            {
+                story.Continue();
+            }
         }
         #endregion
 

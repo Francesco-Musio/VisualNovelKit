@@ -8,6 +8,10 @@ using Characters;
 [RequireComponent(typeof(StoryManager))]
 public class SceneContextManager : MonoBehaviour
 {
+    #region Delegates
+    public delegate void ChoiceEvent(int _index);
+    public ChoiceEvent Choice;
+    #endregion
 
     /// <summary>
     /// Reference to this object's Visual Novel Controller
@@ -52,7 +56,7 @@ public class SceneContextManager : MonoBehaviour
 
         if (uIManager != null)
         {
-            uIManager.Init();
+            uIManager.Init(this);
         }
 
         if (visualNovelSMController != null)
@@ -64,6 +68,15 @@ public class SceneContextManager : MonoBehaviour
         {
             visualNovelSMController.InitSM();
         }
+
+        Choice += HandleChoice;
+    }
+    #endregion
+
+    #region Handlers
+    private void HandleChoice(int _index)
+    {
+        visualNovelSMController.Choice(_index);
     }
     #endregion
 }

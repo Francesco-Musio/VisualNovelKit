@@ -12,4 +12,9 @@ public class VisualNovelChoiceState : VisualNovelSMStateBase
         context.ui.CreateChoices(_currentChoice.GetChoices());
     }
 
+    public override void Exit()
+    {
+        context.ui.ResetChoices();
+    }
+
 }

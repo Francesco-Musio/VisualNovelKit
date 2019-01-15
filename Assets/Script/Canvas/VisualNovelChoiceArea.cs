@@ -2,12 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using Ink.Runtime;
+using System;
 
 public class VisualNovelChoiceArea : MonoBehaviour
 {
     #region Delegates
     public delegate void CreateChoicesEvent(List<Choice> _choices);
     public CreateChoicesEvent CreateChoices;
+
+    public delegate void ChoiceEvent(int _index);
+    public ChoiceEvent Choice;
+
+    public Action ResetButtons;
     #endregion
 
     [Header("Choice Options")]
@@ -15,6 +21,8 @@ public class VisualNovelChoiceArea : MonoBehaviour
     private Transform buttonsContainer;
     [SerializeField]
     private GameObject buttonPrefab;
+    [SerializeField]
+    private List<ChoiceButton> activeButtons = new List<ChoiceButton>();
 
     [Header("Button Pool Options")]
     [SerializeField]
@@ -23,6 +31,8 @@ public class VisualNovelChoiceArea : MonoBehaviour
     private Transform buttonPoolContainer;
 
     private List<GameObject> buttonPool = new List<GameObject>();
+
+    private UIManager ui;
 
     private GameObject getButton()
     {
@@ -37,16 +47,21 @@ public class VisualNovelChoiceArea : MonoBehaviour
     }
 
     #region API
-    public void Init()
+    public void Init(UIManager _manager)
     {
         for (int i = 0; i < maxChoices; i++)
         {
             GameObject _newButton = GameObject.Instantiate(buttonPrefab, buttonPoolContainer.position, buttonPoolContainer.rotation, buttonPoolContainer);
             _newButton.SetActive(false);
             buttonPool.Add(_newButton);
+            _newButton.GetComponent<ChoiceButton>().Init(this);
         }
 
+        ui = _manager;
+
         CreateChoices += HandleCreateChoices;
+        Choice += HandleChoice;
+        ResetButtons += HandleResetButtons;
     }
     #endregion
 
@@ -57,9 +72,27 @@ public class VisualNovelChoiceArea : MonoBehaviour
         {
             GameObject _button = getButton();
             _button.transform.SetParent(buttonsContainer);
-            //_button.Init()
+            _button.GetComponent<ChoiceButton>().SetupButton(_current.text, _current.index);
+            activeButtons.Add(_button.GetComponent<ChoiceButton>());
             _button.SetActive(true);
         }
+    }
+
+    private void HandleChoice(int _index)
+    {
+        ui.Choice(_index);
+    }
+
+    private void HandleResetButtons()
+    {
+        foreach (ChoiceButton _current in activeButtons)
+        {
+            _current.gameObject.SetActive(false);
+            _current.ResetButton();
+            _current.transform.SetParent(buttonPoolContainer);
+        }
+
+        activeButtons.Clear();
     }
     #endregion
 

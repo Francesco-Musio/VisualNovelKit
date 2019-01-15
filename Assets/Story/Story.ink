@@ -11,12 +11,12 @@
 
 * Test1
 
-    ciaooo
+    0$null$Scelta 1
     
     ->END
     
 * Test2
 
-    holaaa
+    0$null$Scelta 2
     
     ->END

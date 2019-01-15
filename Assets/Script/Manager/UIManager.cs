@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using Ink.Runtime;
+using StateMachine.VisualNovelSM;
+using System;
 
 public class UIManager : MonoBehaviour
 {
@@ -17,6 +19,11 @@ public class UIManager : MonoBehaviour
 
     public delegate void ChoiceAreaCreateEvent(List<Choice> _choices);
     public ChoiceAreaCreateEvent CreateChoices;
+
+    public delegate void ChoiceEvent(int _index);
+    public ChoiceEvent Choice;
+
+    public Action ResetChoices;
     #endregion
 
     [Header("Dialogue Canvas")]
@@ -31,11 +38,13 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private VisualNovelChoiceArea visualNovelChoiceArea;
 
+    private SceneContextManager context;
+
     #region API
     /// <summary>
     /// Initialize this object
     /// </summary>
-    public void Init()
+    public void Init(SceneContextManager _context)
     {
         if (visualNovelDialogueArea != null)
             visualNovelDialogueArea.Init();
@@ -44,12 +53,16 @@ public class UIManager : MonoBehaviour
             visualNovelLayersArea.Init();
 
         if (visualNovelChoiceArea != null)
-            visualNovelChoiceArea.Init();
+            visualNovelChoiceArea.Init(this);
+
+        context = _context;
 
         Write += HandleWrite;
         Delete += HandleDelete;
         ChangeBackground += HandleChangeBackground;
         CreateChoices += HandleCrateChoices;
+        Choice += HandleChoice;
+        ResetChoices += HandleResetChoices;
     }
     #endregion
 
@@ -85,6 +98,16 @@ public class UIManager : MonoBehaviour
     private void HandleCrateChoices (List<Choice> _choices)
     {
         visualNovelChoiceArea.CreateChoices(_choices);
+    }
+
+    private void HandleChoice(int _index)
+    {
+        context.Choice(_index);
+    } 
+
+    private void HandleResetChoices()
+    {
+        visualNovelChoiceArea.ResetButtons();
     }
     #endregion
 

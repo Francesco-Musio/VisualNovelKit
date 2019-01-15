@@ -18,6 +18,9 @@ namespace StateMachine.VisualNovelSM
         #region Delegates
         public delegate void VNSMEvent();
         public VNSMEvent InitSM;
+
+        public delegate void ChoiceEvent(int _index);
+        public ChoiceEvent Choice;
         #endregion 
 
         /// <summary>
@@ -51,12 +54,19 @@ namespace StateMachine.VisualNovelSM
             }
 
             InitSM += HandleInitSM;
+            Choice += HandleChoice;
         }
 
-        #region Delegated
+        #region Handlers
         private void HandleInitSM()
         {
             this.VisalNovelSM.SetTrigger("StartSM");
+        }
+
+        private void HandleChoice(int _index)
+        {
+            context.story.Choice(_index);
+            this.VisalNovelSM.SetTrigger("GoToReadLine");
         }
         #endregion
 
