@@ -15,8 +15,7 @@ namespace Characters
         Left,
         Right
     }
-
-    [RequireComponent(typeof(SpriteRenderer))]
+    
     [RequireComponent(typeof(ActorAnimationController))]
     public class Actor : MonoBehaviour
     {
@@ -62,7 +61,7 @@ namespace Characters
         {
             position = ActorState.OffScene;
 
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
 
             spriteRenderer.sprite = emotions[0];
             /*
@@ -78,7 +77,7 @@ namespace Characters
             actorAnimationCtrl = GetComponent<ActorAnimationController>();
             if (actorAnimationCtrl != null)
             {
-                actorAnimationCtrl.Init();
+                actorAnimationCtrl.Init(spriteRenderer);
             }
 
             RemoveActor += HandleRemoveActor;
@@ -154,7 +153,7 @@ namespace Characters
                 _target = this.transform.position + new Vector3(10, 0, 0);
             }
 
-            yield return actorAnimationCtrl.HorizontalTransition(_target, _duration);
+            yield return actorAnimationCtrl.HorizontalTransitionFadeOut(_target, _duration);
             
             this.gameObject.SetActive(false);
             this.position = ActorState.OffScene;
@@ -180,8 +179,8 @@ namespace Characters
             {
                 this.transform.position = _target + new Vector3(10, _target.y, _target.z);
             }
-            
-            yield return actorAnimationCtrl.HorizontalTransition(_target, _duration);
+
+            yield return actorAnimationCtrl.HorizontalTransitionFadeIn(_target, _duration);
 
             this.position = _newPosition;
             yield return null;

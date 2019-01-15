@@ -1,8 +1,8 @@
 2$BG01$2
-0$null$I'm Franco
-0$null$I wanna be the very best
-1$null$Lucia$2
-0$Lucia$Lucia$Io sono Lucia
-1$Lucia$null$2
-0$Lucia$Giovanna$Io sono Giovanna
+0$null$Hello There!
+0$null$General Kenobi!
+1$null$Carmela$2
+0$Carmela$Carmela$Io sono Carmela
+1$Karen$Carmela$2
+0$Karen$Karen$Io sono Karen
 1$null$null$2

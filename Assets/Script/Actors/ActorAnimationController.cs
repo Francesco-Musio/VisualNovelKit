@@ -12,9 +12,10 @@ namespace Characters.Animations
         SpriteRenderer spr;
 
         #region API
-        public void Init()
+        public void Init(SpriteRenderer _spr)
         {
-            spr = GetComponent<SpriteRenderer>();
+            DOTween.Init(true, true, LogBehaviour.Verbose);
+            spr = _spr;
         }
 
         #region Horizontal Transition
@@ -41,7 +42,7 @@ namespace Characters.Animations
         }
         #endregion
 
-        #region Fade In
+        #region Fade Out
         public YieldInstruction FadeOut(int _duration)
         {
             return spr.DOFade(0.0f, _duration).SetEase(Ease.Linear).WaitForCompletion();

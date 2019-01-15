@@ -1128,6 +1128,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actorPrefabs:
   - {fileID: 1289195592712714, guid: c26a6df69e5d82a47863e4d9d4fa3965, type: 2}
+  - {fileID: 1361218663460680, guid: 14a5049b65e35544bbe2323b40a5aaf7, type: 2}
   activeLeftActor: {fileID: 0}
   activeRightActor: {fileID: 0}
   rightPosition: {x: 5, y: 0, z: 0}

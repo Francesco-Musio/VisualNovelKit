@@ -58,16 +58,16 @@ public class VisualNovelDialogueArea : MonoBehaviour
                 CentralTextArea.gameObject.SetActive(true);
                 break;
             case "left":
-                RightNameArea.GetComponentInChildren<Text>().text = _data[1];
+                LeftNameArea.GetComponentInChildren<Text>().text = _data[1];
                 RightTextArea.text = _data[2];
                 RightTextArea.gameObject.SetActive(true);
-                RightNameArea.gameObject.SetActive(true);
+                LeftNameArea.gameObject.SetActive(true);
                 break;
             case "right":
-                LeftNameArea.GetComponentInChildren<Text>().text = _data[1];
+                RightNameArea.GetComponentInChildren<Text>().text = _data[1];
                 LeftTextArea.text = _data[2];
                 LeftTextArea.gameObject.SetActive(true);
-                LeftNameArea.gameObject.SetActive(true);
+                RightNameArea.gameObject.SetActive(true);
                 break;
         }
     }
