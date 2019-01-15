@@ -64,9 +64,7 @@ namespace Characters
         public void Init()
         {
             if (actorName == "Actor")
-            {
                 actorName = this.gameObject.name;
-            }
 
             position = ActorState.OffScene;
 

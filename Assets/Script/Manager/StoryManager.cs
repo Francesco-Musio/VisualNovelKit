@@ -25,8 +25,9 @@ namespace StoryManagerNS
     public class StoryManager : MonoBehaviour
     {
         #region Delegates
-        public delegate LineElement StoryEvent();
+        public delegate bool StoryEvent();
         public StoryEvent ReadLine;
+        public StoryEvent ReadChoice;
         #endregion
 
         [Header("Ink File")]
@@ -46,6 +47,8 @@ namespace StoryManagerNS
         /// </summary>
         private LineElement currentLine = null;
 
+        private ChoiceElement currentChoice = null;
+
         #region API
         /// <summary>
         /// Initialize this object
@@ -58,15 +61,16 @@ namespace StoryManagerNS
             }
 
             ReadLine += HandleReadLine;
+            ReadChoice += HandleReadChoice;
         }
         #endregion
 
-        #region Delegated
+        #region Handler
         /// <summary>
         /// Read the next Line from the story
         /// </summary>
         /// <returns>Line Elements with the just read informations</returns>
-        private LineElement HandleReadLine()
+        private bool HandleReadLine()
         {
             if (story.canContinue)
             {
@@ -79,10 +83,20 @@ namespace StoryManagerNS
 
                 currentLine = _lineElement;
 
-                return _lineElement;
+                return true;
             }
 
-            return null;
+            return false;
+        }
+
+        private bool HandleReadChoice()
+        {
+            if (!story.canContinue && story.currentChoices.Count > 0)
+            {
+                return true;
+            }
+
+            return false;
         }
         #endregion
 
@@ -91,12 +105,18 @@ namespace StoryManagerNS
         {
             return currentLine;
         }
+
+        public ChoiceElement GetCurrentChoice()
+        {
+            return currentChoice;
+        }
         #endregion
         
     }
 
     public class LineElement : ScriptableObject
     {
+
         /// <summary>
         /// id of this line's command
         /// </summary>
@@ -111,9 +131,9 @@ namespace StoryManagerNS
         /// Initialize this object
         /// </summary>
         /// <param name="_rawdata"></param>
-        public void Init (string[] _rawdata)
+        public void Init(string[] _rawdata)
         {
-            data = new  string[_rawdata.Length - 1];
+            data = new string[_rawdata.Length - 1];
 
             for (int i = 0; i < _rawdata.Length; i++)
             {
@@ -146,6 +166,11 @@ namespace StoryManagerNS
             data[data.Length - 1] = value.ToString();
         }
         #endregion
+    }
+
+    public class ChoiceElement : ScriptableObject
+    {
+
     }
 }
 
