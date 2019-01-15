@@ -1,40 +1,42 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using System.Collections;
 using StateMachine.VisualNovelSM;
 using StoryManagerNS;
 
-public class VisualNovelSMPlaceActorState : VisualNovelSMStateBase
+public class VisualNovelSMChangeEmotionState : VisualNovelSMStateBase
 {
     /// <summary>
-    /// Total animation time
-    /// Value got from the story line
+    /// Duration of the animation
     /// </summary>
     private int animationTime = 10000;
+
     /// <summary>
-    /// miltiplies time to wait in case two animations needs to happen
+    /// Multiplier of the animation TIme
     /// </summary>
     private int multiplier = 1;
 
     /// <summary>
-    /// Get the Current line from the story manager and request to place the actors
+    /// Call the change state event and then go to wait state
     /// </summary>
     public override void Enter()
     {
         LineElement _currentLine = context.story.GetCurrentLine();
-        animationTime = int.Parse(_currentLine.GetData()[2]);
-        context.characters.PlaceActor(_currentLine.GetData(), out multiplier);
+        string[] _data = _currentLine.GetData();
+        animationTime = int.Parse(_data[_data.Length - 1]);
+
+        context.characters.ChangeState(_data, out multiplier);
 
         _currentLine.SetTimer(animationTime * multiplier);
         context.GoToWaitCallback();
     }
 
     /// <summary>
-    /// Reset default state values
+    /// Reset variables
     /// </summary>
     public override void Exit()
     {
         animationTime = 10000;
+        multiplier = 1;
     }
 
 }

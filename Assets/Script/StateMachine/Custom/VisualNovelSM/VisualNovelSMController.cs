@@ -37,7 +37,7 @@ namespace StateMachine.VisualNovelSM
         public void Init(SceneContextManager _scene, StoryManager _story, CharacterManager _characters, UIManager _ui)
         {
             this.context = new VisualNovelSMContext(_scene, _story, _characters, _ui);
-            context.ActionsInit(goToWriteDialogueCallback, goToReadLineCallback, goToPlaceActorCallback, goToChangeBackgroundCallback, goToWaitCallback);
+            context.ActionsInit(goToWriteDialogueCallback, goToReadLineCallback, goToPlaceActorCallback, goToChangeBackgroundCallback, goToWaitCallback, goToChangeEmotionCallback);
 
             this.VisalNovelSM = GetComponent<Animator>();
 
@@ -62,7 +62,7 @@ namespace StateMachine.VisualNovelSM
 
         #region Callbacks
         /// <summary>
-        /// Used to switch from ReadLineState to WriteLineState
+        /// Used to switch to WriteLineState
         /// </summary>
         private void goToWriteDialogueCallback()
         {
@@ -70,7 +70,7 @@ namespace StateMachine.VisualNovelSM
         }
 
         /// <summary>
-        /// Used to switch from ReadLineState to PlaceActorState
+        /// Used to switch to PlaceActorState
         /// </summary>
         private void goToPlaceActorCallback()
         {
@@ -78,21 +78,35 @@ namespace StateMachine.VisualNovelSM
         }
 
         /// <summary>
-        /// Used to return to ReadLineState
+        /// Used to switch to ReadLineState
         /// </summary>
         private void goToReadLineCallback()
         {
             this.VisalNovelSM.SetTrigger("GoToReadLine");
         }
 
+        /// <summary>
+        /// Used to switch to ChamgeBackgroundState
+        /// </summary>
         private void goToChangeBackgroundCallback()
         {
             this.VisalNovelSM.SetTrigger("GoToChangeBackground");
         }
 
+        /// <summary>
+        /// Used to switch to WaitState
+        /// </summary>
         private void goToWaitCallback()
         {
             this.VisalNovelSM.SetTrigger("GoToWait");
+        }
+
+        /// <summary>
+        /// Used to switch to ChangeEmotionState
+        /// </summary>
+        private void goToChangeEmotionCallback()
+        {
+            this.VisalNovelSM.SetTrigger("GoToChangeEmotion");
         }
         #endregion
 
@@ -114,22 +128,11 @@ namespace StateMachine.VisualNovelSM
         public Action GoToPlaceActorCallback;
         public Action GoToChangeBackgroundCallback;
         public Action GoToWaitCallback;
-
-        private int timeToWait = 0;
-
-        public int TimeToWait
-        {
-            get { return TimeToWait; }
-            set { timeToWait = value; }
-        }
+        public Action GoToChangeEmotionCallback;
 
         /// <summary>
         /// Initialize this object
         /// </summary>
-        /// <param name="_scene"></param>
-        /// <param name="_story"></param>
-        /// <param name="_characters"></param>
-        /// <param name="_dialogues"></param>
         public VisualNovelSMContext(SceneContextManager _scene, StoryManager _story, CharacterManager _characters, UIManager _ui)
         {
             scene = _scene;
@@ -141,16 +144,14 @@ namespace StateMachine.VisualNovelSM
         /// <summary>
         /// Setup the Actions avaiable in this context
         /// </summary>
-        /// <param name="_goToWriteDialogueCallback"></param>
-        /// <param name="_goToReadLineCallback"></param>
-        /// <param name="_goToPlaceActorCallback"></param>
-        public void ActionsInit(Action _goToWriteDialogueCallback, Action _goToReadLineCallback, Action _goToPlaceActorCallback, Action _goToChangeBackgroundCallback, Action _goToWaitCallback)
+        public void ActionsInit(Action _goToWriteDialogueCallback, Action _goToReadLineCallback, Action _goToPlaceActorCallback, Action _goToChangeBackgroundCallback, Action _goToWaitCallback, Action _goToChangeEmotionCallback)
         {
             GoToWriteDialogueCallback = _goToWriteDialogueCallback;
             GoToReadLineCallback = _goToReadLineCallback;
             GoToPlaceActorCallback = _goToPlaceActorCallback;
             GoToChangeBackgroundCallback = _goToChangeBackgroundCallback;
             GoToWaitCallback = _goToWaitCallback;
+            GoToChangeEmotionCallback = _goToChangeEmotionCallback;
         }
 
     }

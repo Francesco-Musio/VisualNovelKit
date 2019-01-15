@@ -29,6 +29,10 @@ public class VisualNovelSMReadLineState : VisualNovelSMStateBase {
             case 3:
                 context.GoToWaitCallback();
                 break;
+
+            case 4:
+                context.GoToChangeEmotionCallback();
+                break;
         }
 
     }

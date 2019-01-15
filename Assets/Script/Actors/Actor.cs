@@ -25,14 +25,20 @@ namespace Characters
 
         public delegate void ActorInsertEvent(int _duration, Vector3 _target, ActorState _newPosition);
         public ActorInsertEvent InsertActor;
+
+        public delegate void ActorChangeState(int _newState, int _duration);
+        public ActorChangeState ChangeState;
         #endregion
 
         [Header("General Info")]
         [SerializeField]
         [Tooltip("Name of the actor. This is used to identify this actor")]
-        private string name = "Actor";
+        private string actorName = "Actor";
 
         [Header("Current State")]
+        [SerializeField]
+        [Tooltip("Reference to this object's graphics")]
+        private GameObject graphics;
         [SerializeField]
         [Tooltip("Current emotion of this actor")]
         private string currentEmotion;
@@ -46,10 +52,8 @@ namespace Characters
         private Sprite[] emotions;
 
         /// <summary>
-        /// Reference to object's Sprite Renderer
+        /// Reference to the animation controller of this actor
         /// </summary>
-        private SpriteRenderer spriteRenderer;
-
         private ActorAnimationController actorAnimationCtrl;
 
         #region API
@@ -59,16 +63,21 @@ namespace Characters
         /// </summary>
         public void Init()
         {
+            if (actorName == "Actor")
+            {
+                actorName = this.gameObject.name;
+            }
+
             position = ActorState.OffScene;
 
-            spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+            SpriteRenderer spriteRenderer = graphics.GetComponent<SpriteRenderer>();
 
             spriteRenderer.sprite = emotions[0];
-            /*
+            
             Color _tempColor = spriteRenderer.color;
             _tempColor.a = 0;
             spriteRenderer.color = _tempColor;
-            */
+            
             currentEmotion = spriteRenderer.sprite.name;
 
             this.transform.position = new Vector3(1000, 1000, 1000);
@@ -82,27 +91,14 @@ namespace Characters
 
             RemoveActor += HandleRemoveActor;
             InsertActor += HandleInsertActor;
-        }
-
-        /// <summary>
-        /// Changes the current emotion of the actor
-        /// </summary>
-        /// <param name="newState">id of the new emotion</param>
-        private void ChangeState(int newState)
-        {
-            if (emotions.Length > newState && newState >= 0)
-            {
-                spriteRenderer.sprite = emotions[newState];
-            }
-
-            currentEmotion = spriteRenderer.sprite.name;
+            ChangeState += HandleChangeState;
         }
         #endregion
 
         #region Getters
         public string GetName()
         {
-            return name;
+            return actorName;
         }
 
         public ActorState GetPosition()
@@ -131,6 +127,22 @@ namespace Characters
         {
             this.gameObject.SetActive(true);
             StartCoroutine(CInsertActor(_duration, _target, _newPosition));
+        }
+
+        /// <summary>
+        /// Changes the current emotion of the actor
+        /// Start coroutine if this actor is active in scene
+        /// </summary>
+        /// <param name="newState">id of the new emotion</param>
+        private void HandleChangeState(int _newState, int _duration)
+        {
+            if (emotions.Length > _newState && _newState >= 0)
+            {
+                if (position == ActorState.OffScene)
+                    graphics.GetComponent<SpriteRenderer>().sprite = emotions[_newState];
+                else
+                    StartCoroutine(CChangeState(_newState, _duration));
+            }
         }
         #endregion
 
@@ -184,6 +196,42 @@ namespace Characters
 
             this.position = _newPosition;
             yield return null;
+        }
+
+        /// <summary>
+        /// Coroutine that change the emotion of this actor
+        /// </summary>
+        /// <param name="_newState">target emotion id</param>
+        /// <param name="_duration">duration of the animation</param>
+        /// <returns></returns>
+        private IEnumerator CChangeState(int _newState, int _duration)
+        {
+            //crea nuovo oggetto grafica figlio
+            GameObject _newGraphics = GameObject.Instantiate(graphics, graphics.transform.position, graphics.transform.rotation, transform);
+            SpriteRenderer _newSpr = _newGraphics.GetComponent<SpriteRenderer>();
+            Color _tempColor = _newSpr.color;
+            _tempColor.a = 0;
+            _newSpr.color = _tempColor;
+            _newSpr.sprite = emotions[_newState];
+
+            //fade out grafica principale
+            actorAnimationCtrl.FadeOut(_duration);
+
+            //fade in grafica secondaria
+            yield return actorAnimationCtrl.FadeIn(_duration, _newSpr);
+
+            //elimino la vecchia grafica primaria
+            GameObject.Destroy(graphics);
+
+            //setto la nuova grafica primaria
+            graphics = _newGraphics;
+            graphics.name = "Graphics";
+            actorAnimationCtrl.SetSpriteRenderer(_newSpr);
+
+            currentEmotion = _newSpr.sprite.name;
+
+            yield return null;
+
         }
         #endregion
 

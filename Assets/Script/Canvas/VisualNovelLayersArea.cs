@@ -25,6 +25,9 @@ public class VisualNovelLayersArea : MonoBehaviour
     private Image foreground;
 
     #region API
+    /// <summary>
+    /// Initialize the Layer's Area
+    /// </summary>
     public void Init()
     {
         ChangeBackground += HandleChangeBackground;
@@ -34,6 +37,7 @@ public class VisualNovelLayersArea : MonoBehaviour
     #endregion
 
     #region Handlers
+    //TO MODIFY
     private int HandleChangeBackground(string[] _target)
     {
         if (activeBackground != _target[0])

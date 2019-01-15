@@ -5,12 +5,24 @@ using StoryManagerNS;
 
 public class VisualNovelSMWaitState : VisualNovelSMStateBase
 {
-
+    /// <summary>
+    /// Internal timer of this state
+    /// </summary>
     float timer = 0;
+
+    /// <summary>
+    /// Time to wait in this state
+    /// </summary>
     int timeToWait = -1;
 
+    /// <summary>
+    /// if true, the timer can start
+    /// </summary>
     bool canStart = false;
 
+    /// <summary>
+    /// Get the time to wait and then start waiting
+    /// </summary>
     public override void Enter()
     {
         LineElement _currentLine = context.story.GetCurrentLine();
@@ -19,6 +31,9 @@ public class VisualNovelSMWaitState : VisualNovelSMStateBase
         canStart = true;
     }
 
+    /// <summary>
+    /// Check time every update and then read the next line from the ink file
+    /// </summary>
     public override void Tick()
     {
         if (canStart)
@@ -31,6 +46,9 @@ public class VisualNovelSMWaitState : VisualNovelSMStateBase
         }
     }
 
+    /// <summary>
+    /// reset the default value
+    /// </summary>
     public override void Exit()
     {
         timer = 0;

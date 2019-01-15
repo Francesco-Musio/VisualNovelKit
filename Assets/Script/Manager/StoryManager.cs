@@ -15,6 +15,9 @@ using System.IO;
  *  
  * Wait:
  *  3 $ TimeToWait
+ *  
+ * Change Emotion:
+ *  4 $ TargetActor $ TargetStateID $ TransitionTime
  */
 
 namespace StoryManagerNS

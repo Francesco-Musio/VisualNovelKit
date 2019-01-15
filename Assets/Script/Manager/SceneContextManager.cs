@@ -65,5 +65,5 @@ public class SceneContextManager : MonoBehaviour
             visualNovelSMController.InitSM();
         }
     }
-    #endregion API
+    #endregion
 }

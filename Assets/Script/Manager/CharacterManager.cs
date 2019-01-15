@@ -7,8 +7,9 @@ namespace Characters
     public class CharacterManager : MonoBehaviour
     {
         #region Delegates
-        public delegate void PlaceActorEvent(string[] _data, out int multiplier);
-        public PlaceActorEvent PlaceActor;
+        public delegate void CharacterEvent(string[] _data, out int multiplier);
+        public CharacterEvent PlaceActor;
+        public CharacterEvent ChangeState;
         #endregion
 
         [Header("Actors")]
@@ -50,8 +51,14 @@ namespace Characters
             }
 
             PlaceActor += HandlePlaceActor;
+            ChangeState += HandleActorChangeState;
         }
 
+        /// <summary>
+        /// Return the position of the actor with the given name
+        /// </summary>
+        /// <param name="_data">name of the actor to search</param>
+        /// <returns>string that indicates the position</returns>
         public string GetActorPosition(string _data)
         {
             if (activeLeftActor != null && activeLeftActor.GetName() == _data)
@@ -73,7 +80,8 @@ namespace Characters
         /// <summary>
         /// Handle the request to put actors on the scene
         /// </summary>
-        /// <param name="_data">data string taken from the ink file</param>
+        /// <param name="_data">data array string taken from the ink file</param>
+        /// <param name="multiplier">multiplier for the animation time</param>
         private void HandlePlaceActor(string[] _data, out int multiplier)
         {
             if (activeLeftActor != null && activeLeftActor.GetName() != _data[0])
@@ -91,8 +99,43 @@ namespace Characters
 
             StartCoroutine(CHandlePlaceActor(_data));
         }
+
+        /// <summary>
+        /// Handle the request to change an actor's emotion
+        /// </summary>
+        /// <param name="_data">data array string taken from the ink file</param>
+        /// <param name="multiplier">multiplier for the animation time</param>
+        private void HandleActorChangeState(string[] _data, out int multiplier)
+        {
+            Actor _targetActor = null;
+            multiplier = 0;
+            string _actorName = _data[0];
+            int _newState = int.Parse(_data[1]);
+            int _duration = int.Parse(_data[2]);
+
+            foreach (Actor _current in actorList)
+            {
+                if (_current.name == _actorName)
+                    _targetActor = _current;
+            }
+
+            if (_targetActor != null)
+            {
+                if (_targetActor.GetPosition() != ActorState.OffScene)
+                    multiplier = 1;
+
+                _targetActor.ChangeState(_newState, _duration);
+
+            }
+        }
         #endregion
 
+        #region Coroutines
+        /// <summary>
+        /// Coroutine that put the actors in place
+        /// </summary>
+        /// <param name="_data">data array string taken from the ink file</param>
+        /// <returns></returns>
         private IEnumerator CHandlePlaceActor(string[] _data)
         {
             bool wait = false;
@@ -144,5 +187,6 @@ namespace Characters
                 }
             }
         }
+        #endregion
     }
 }

@@ -5,4 +5,6 @@
 0$Carmela$Carmela$Io sono Carmela
 1$Karen$Carmela$2
 0$Karen$Karen$Io sono Karen
+4$Karen$1$1
+0$Karen$Karen$E sono incazzata
 1$null$null$2
