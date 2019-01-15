@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using Ink.Runtime;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,6 +14,9 @@ public class UIManager : MonoBehaviour
 
     public delegate int ChangeBackgroundEvent(string[] _target);
     public ChangeBackgroundEvent ChangeBackground;
+
+    public delegate void ChoiceAreaCreateEvent(List<Choice> _choices);
+    public ChoiceAreaCreateEvent CreateChoices;
     #endregion
 
     [Header("Dialogue Canvas")]
@@ -21,6 +26,10 @@ public class UIManager : MonoBehaviour
     [Header("Background Canvas")]
     [SerializeField]
     private VisualNovelLayersArea visualNovelLayersArea;
+
+    [Header("Choice Canvas")]
+    [SerializeField]
+    private VisualNovelChoiceArea visualNovelChoiceArea;
 
     #region API
     /// <summary>
@@ -34,9 +43,13 @@ public class UIManager : MonoBehaviour
         if (visualNovelLayersArea != null)
             visualNovelLayersArea.Init();
 
+        if (visualNovelChoiceArea != null)
+            visualNovelChoiceArea.Init();
+
         Write += HandleWrite;
         Delete += HandleDelete;
         ChangeBackground += HandleChangeBackground;
+        CreateChoices += HandleCrateChoices;
     }
     #endregion
 
@@ -67,6 +80,11 @@ public class UIManager : MonoBehaviour
     private int HandleChangeBackground(string[] _target)
     {
         return visualNovelLayersArea.ChangeBackground(_target);
+    }
+
+    private void HandleCrateChoices (List<Choice> _choices)
+    {
+        visualNovelChoiceArea.CreateChoices(_choices);
     }
     #endregion
 

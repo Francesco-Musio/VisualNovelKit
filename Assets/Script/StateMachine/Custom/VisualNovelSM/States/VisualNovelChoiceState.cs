@@ -9,7 +9,7 @@ public class VisualNovelChoiceState : VisualNovelSMStateBase
     public override void Enter()
     {
         ChoiceElement _currentChoice = context.story.GetCurrentChoice();
-        // ui manager fa apparire pulsanti per ogni scelta.
+        context.ui.CreateChoices(_currentChoice.GetChoices());
     }
 
 }
