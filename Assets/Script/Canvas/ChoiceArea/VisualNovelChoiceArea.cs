@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Ink.Runtime;
 using System;
+using UnityEngine.UI;
 
+[RequireComponent(typeof(ChoiceAnimationController))]
 public class VisualNovelChoiceArea : MonoBehaviour
 {
     #region Delegates
@@ -30,9 +32,14 @@ public class VisualNovelChoiceArea : MonoBehaviour
     [SerializeField]
     private Transform buttonPoolContainer;
 
+    [Header("Choice Background")]
+    [SerializeField]
+    private Image choiceBackground;
+
     private List<GameObject> buttonPool = new List<GameObject>();
 
     private UIManager ui;
+    private ChoiceAnimationController choiceAnimationCtrl;
 
     private GameObject getButton()
     {
@@ -59,6 +66,12 @@ public class VisualNovelChoiceArea : MonoBehaviour
 
         ui = _manager;
 
+        choiceAnimationCtrl = GetComponent<ChoiceAnimationController>();
+        if (choiceAnimationCtrl != null)
+        {
+            choiceAnimationCtrl.Init(choiceBackground, 0.5f);
+        }
+
         CreateChoices += HandleCreateChoices;
         Choice += HandleChoice;
         ResetButtons += HandleResetButtons;
@@ -68,14 +81,7 @@ public class VisualNovelChoiceArea : MonoBehaviour
     #region Handlers
     private void HandleCreateChoices (List<Choice> _choices)
     {
-        foreach (Choice _current in _choices)
-        {
-            GameObject _button = getButton();
-            _button.transform.SetParent(buttonsContainer);
-            _button.GetComponent<ChoiceButton>().SetupButton(_current.text, _current.index);
-            activeButtons.Add(_button.GetComponent<ChoiceButton>());
-            _button.SetActive(true);
-        }
+        StartCoroutine(CCreateChoices(_choices));
     }
 
     private void HandleChoice(int _index)
@@ -85,6 +91,29 @@ public class VisualNovelChoiceArea : MonoBehaviour
 
     private void HandleResetButtons()
     {
+        StartCoroutine(CResetButtons());
+    }
+    #endregion
+
+    #region Coroutines
+    private IEnumerator CCreateChoices (List<Choice> _choices)
+    {
+        yield return choiceAnimationCtrl.FadeIn();
+
+        foreach (Choice _current in _choices)
+        {
+            GameObject _button = getButton();
+            _button.transform.SetParent(buttonsContainer);
+            _button.GetComponent<ChoiceButton>().SetupButton(_current.text, _current.index);
+            activeButtons.Add(_button.GetComponent<ChoiceButton>());
+            _button.SetActive(true);
+        }
+    }  
+
+    private IEnumerator CResetButtons ()
+    {
+        yield return choiceAnimationCtrl.FadeOut();
+
         foreach (ChoiceButton _current in activeButtons)
         {
             _current.gameObject.SetActive(false);

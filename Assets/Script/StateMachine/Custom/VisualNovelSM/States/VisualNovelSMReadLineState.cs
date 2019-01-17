@@ -43,7 +43,7 @@ public class VisualNovelSMReadLineState : VisualNovelSMStateBase {
         }
         else
         {
-            // callback to exit state
+            Debug.Log("END");
         }
         
     }

@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
     public delegate void DialogueAreaDeleteEvent();
     public DialogueAreaDeleteEvent Delete;
 
-    public delegate int ChangeBackgroundEvent(string[] _target);
+    public delegate void ChangeBackgroundEvent(string[] _target, out int _multiplier);
     public ChangeBackgroundEvent ChangeBackground;
 
     public delegate void ChoiceAreaCreateEvent(List<Choice> _choices);
@@ -30,7 +30,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private VisualNovelDialogueArea visualNovelDialogueArea;
 
-    [Header("Background Canvas")]
+    [Header("Layer Object")]
     [SerializeField]
     private VisualNovelLayersArea visualNovelLayersArea;
 
@@ -90,9 +90,9 @@ public class UIManager : MonoBehaviour
     /// </summary>
     /// <param name="_target"></param>
     /// <returns></returns>
-    private int HandleChangeBackground(string[] _target)
+    private void HandleChangeBackground(string[] _target, out int _multiplier)
     {
-        return visualNovelLayersArea.ChangeBackground(_target);
+        visualNovelLayersArea.ChangeBackground(_target, out _multiplier);
     }
 
     private void HandleCrateChoices (List<Choice> _choices)

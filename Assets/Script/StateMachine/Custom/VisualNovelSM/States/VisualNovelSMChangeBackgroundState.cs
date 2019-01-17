@@ -32,7 +32,9 @@ public class VisualNovelSMChangeBackgroundState : VisualNovelSMStateBase
         LineElement _currentLine = context.story.GetCurrentLine();
         animationTime = int.Parse(_currentLine.GetData()[1]);
         start = true;
-        multiplier = context.ui.ChangeBackground(_currentLine.GetData());
+        context.ui.ChangeBackground(_currentLine.GetData(), out multiplier);
+
+        _currentLine.SetTimer(animationTime * multiplier);
 
         context.GoToWaitCallback();
     }
@@ -45,6 +47,7 @@ public class VisualNovelSMChangeBackgroundState : VisualNovelSMStateBase
         start = false;
         timer = 0;
         animationTime = 10000;
+        multiplier = 1;
     }
 
 }
