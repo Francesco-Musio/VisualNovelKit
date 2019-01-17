@@ -167,6 +167,7 @@ namespace Characters
             
             this.gameObject.SetActive(false);
             this.position = ActorState.OffScene;
+            graphics.GetComponent<SpriteRenderer>().flipX = false;
             this.transform.position = new Vector3(1000, 1000, 1000);
             yield return null;
         }
@@ -183,6 +184,7 @@ namespace Characters
             
             if (_newPosition == ActorState.Left)
             {
+                graphics.GetComponent<SpriteRenderer>().flipX = true;
                 this.transform.position = _target - new Vector3(10, _target.y, _target.z);
             }
             else if (_newPosition == ActorState.Right)
@@ -211,6 +213,10 @@ namespace Characters
             _tempColor.a = 0;
             _newSpr.color = _tempColor;
             _newSpr.sprite = emotions[_newState];
+            if (position == ActorState.Left)
+            {
+                _newSpr.GetComponent<SpriteRenderer>().flipX = true;
+            }
 
             //fade out grafica principale
             actorAnimationCtrl.FadeOut(_duration);

@@ -14,7 +14,7 @@ public class VisualNovelChoiceState : VisualNovelSMStateBase
 
     public override void Exit()
     {
-        context.ui.ResetChoices();
+        //context.ui.ResetChoices();
     }
 
 }

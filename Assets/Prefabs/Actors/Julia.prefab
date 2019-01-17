@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 114722248819237118}
   - component: {fileID: 114251368329551826}
   m_Layer: 0
-  m_Name: Carmela
+  m_Name: Julia
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99e80388587f77845a4ae1bce5332795, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actorName: Carmela
+  actorName: Julia
   graphics: {fileID: 1375824267522004}
   currentEmotion: 
   position: 0

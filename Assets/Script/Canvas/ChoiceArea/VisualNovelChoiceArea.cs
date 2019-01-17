@@ -74,7 +74,7 @@ public class VisualNovelChoiceArea : MonoBehaviour
 
         CreateChoices += HandleCreateChoices;
         Choice += HandleChoice;
-        ResetButtons += HandleResetButtons;
+        //ResetButtons += HandleResetButtons;
     }
     #endregion
 
@@ -86,13 +86,14 @@ public class VisualNovelChoiceArea : MonoBehaviour
 
     private void HandleChoice(int _index)
     {
-        ui.Choice(_index);
+        StartCoroutine(CResetButtons(_index));
     }
 
+    /*
     private void HandleResetButtons()
     {
         StartCoroutine(CResetButtons());
-    }
+    }*/
     #endregion
 
     #region Coroutines
@@ -110,7 +111,7 @@ public class VisualNovelChoiceArea : MonoBehaviour
         }
     }  
 
-    private IEnumerator CResetButtons ()
+    private IEnumerator CResetButtons (int _index)
     {
         yield return choiceAnimationCtrl.FadeOut();
 
@@ -122,6 +123,7 @@ public class VisualNovelChoiceArea : MonoBehaviour
         }
 
         activeButtons.Clear();
+        ui.Choice(_index);
     }
     #endregion
 

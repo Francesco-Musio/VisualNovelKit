@@ -1164,7 +1164,7 @@ MonoBehaviour:
   buttonPrefab: {fileID: 1818753379631296, guid: 12f9a53694bf0054bb5bc050a437537b,
     type: 2}
   activeButtons: []
-  maxChoices: 4
+  maxChoices: 6
   buttonPoolContainer: {fileID: 1349142683}
   choiceBackground: {fileID: 1806710294}
 --- !u!114 &1343247459
@@ -1386,8 +1386,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actorPrefabs:
   - {fileID: 1289195592712714, guid: c26a6df69e5d82a47863e4d9d4fa3965, type: 2}
-  - {fileID: 1361218663460680, guid: 14a5049b65e35544bbe2323b40a5aaf7, type: 2}
-  - {fileID: 1669596709560304, guid: 325897e606aa8094e92d729eaee89317, type: 2}
   activeLeftActor: {fileID: 0}
   activeRightActor: {fileID: 0}
   rightPosition: {x: 5, y: 0, z: 0}
